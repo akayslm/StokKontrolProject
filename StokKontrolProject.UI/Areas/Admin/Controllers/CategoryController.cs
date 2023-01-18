@@ -62,7 +62,41 @@ namespace StokKontrolProject.UI.Areas.Admin.Controllers
             using (var httpClient = new HttpClient())
             {
                 StringContent content = new StringContent(JsonConvert.SerializeObject(category), Encoding.UTF8, "application/json");
-                using (var cevap = await httpClient.PostAsync($"{uri}/api/Category/TumKategorileriGetir", content))
+                using (var cevap = await httpClient.PostAsync($"{uri}/api/Category/KategoriEkle", content))
+                {
+                    string apiCevap = await cevap.Content.ReadAsStringAsync();
+                    //kategoriler = JsonConvert.DeserializeObject<List<Category>>(apiCevap);
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
+        static Category updatedCategory; // İlgili kategoriyi güncelleme işleminin devamındaki (put) kullanacapımız için o metottan da ulaşabilmek adına globalde tanımlayalım. Eklenme tarihini güncelleme işleminde kullanmak için static hale getirdik
+        
+        [HttpGet]
+        public async Task<IActionResult> KategoriGuncelle(int id) //id ile ilgili kategoryi bul getir
+        {            
+            using (var httpClient = new HttpClient())
+            {
+                using (var cevap = await httpClient.GetAsync($"{uri}/api/Category/IdyeGoreKategoriGetir/{id}"))
+                {
+                    string apiCevap = await cevap.Content.ReadAsStringAsync();
+                    updatedCategory = JsonConvert.DeserializeObject<Category>(apiCevap);
+                }
+            }
+            return View(updatedCategory); // Update edilecek kategoriyi güncelleme View'ında gösterecek  
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> KategoriGuncelle(Category guncelKategori) //güncellenmiş kategori parametre olarak alınır.
+        {
+            using (var httpClient = new HttpClient())
+            {
+                guncelKategori.AddedDate = updatedCategory.AddedDate;
+                guncelKategori.IsActive = true;
+
+                StringContent content = new StringContent(JsonConvert.SerializeObject(guncelKategori), Encoding.UTF8, "application/json");
+                using (var cevap = await httpClient.PutAsync($"{uri}/api/Category/KategoriGuncelle/{guncelKategori.ID}", content))
                 {
                     string apiCevap = await cevap.Content.ReadAsStringAsync();
                     //kategoriler = JsonConvert.DeserializeObject<List<Category>>(apiCevap);

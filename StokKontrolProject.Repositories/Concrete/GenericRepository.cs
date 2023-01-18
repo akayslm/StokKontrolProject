@@ -156,12 +156,13 @@ namespace StokKontrolProject.Repositories.Concrete
         {
             try
             {
+                //item.IsActive = true;
+                item.ModifiedDate = DateTime.Now;
                 _context.Set<T>().Update(item);
                 return Save() > 0;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-
                 return false;
             }
         }

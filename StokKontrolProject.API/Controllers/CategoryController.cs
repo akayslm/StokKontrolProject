@@ -89,16 +89,14 @@ namespace StokKontrolProject.API.Controllers
             {
                 return NotFound();
             }
-
             try
             {
                 _service.Remove(category);
-                return Ok();
+                return Ok("Kategori Silindi!");
             }
             catch (Exception)
             {
-
-                throw;
+                return BadRequest();
             }
 
             return Ok("Kategori Silindi!");
@@ -109,8 +107,8 @@ namespace StokKontrolProject.API.Controllers
             return _service.Any(e => e.ID == id);
         }
 
-        [HttpGet()]
-        public IActionResult KategorileriAktiflestir(int id)
+        [HttpGet("{id}")]
+        public IActionResult KategoriAktiflestir(int id)
         {
             var category = _service.GetByID(id);
             if (category == null)

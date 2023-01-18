@@ -86,11 +86,11 @@ namespace StokKontrolProject.API.Controllers
             try
             {
                 _service.Remove(supplier);
-                return Ok();
+                return Ok("Tedarikçi Silindi!");
             }
             catch (Exception)
             {
-                throw;
+                return BadRequest();
             }
             return Ok("Tedarikçi Silindi!");
         }
@@ -100,7 +100,7 @@ namespace StokKontrolProject.API.Controllers
             return _service.Any(e => e.ID == id);
         }
 
-        [HttpGet()]
+        [HttpGet("{id}")]
         public IActionResult TedarikcileriAktiflestir(int id)
         {
             var supplier = _service.GetByID(id);
