@@ -40,7 +40,7 @@ namespace StokKontrolProject.API.Controllers
         [HttpGet("{id}")]
         public IActionResult IdyeGoreSiparisGetir(int id)
         {
-            return Ok(_orderService.GetByID(id));
+            return Ok(_orderService.GetByID(id, t0=>t0.SiparisDetaylari, t1=>t1.Kullanici));
         }
 
         // GET: api/Product/IdyeGoreÜrünGetir/5

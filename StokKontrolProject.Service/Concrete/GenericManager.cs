@@ -72,6 +72,11 @@ namespace StokKontrolProject.Service.Concrete
             return _repository.GetByID(id);
         }
 
+        public IQueryable<T> GetActive(int id, params Expression<Func<T, object>>[] includes)
+        {
+            return _repository.GetByID(id, includes);
+        }
+
         public List<T> GetDefault(Expression<Func<T, bool>> exp)
         {
             return _repository.GetDefault(exp);

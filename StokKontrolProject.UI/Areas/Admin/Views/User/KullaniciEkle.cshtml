@@ -1,4 +1,5 @@
 ﻿@using StokKontrolProject.Entities.Entities
+@using StokKontrolProject.Entities.Enums
 @{
     ViewData["Title"] = "KullaniciEkle";
 }
@@ -41,11 +42,11 @@
                             <div class="form-group has-success">
                                 <label asp-for="Role" class="control-label mb-1">Rol</label>
                                 @*<input asp-for="Role" type="text" class="form-control">*@
-                                <select asp-for="Role" class="form-control">
+                                <select asp-for="Role" class="form-control" asp-items="@Html.GetEnumSelectList(typeof(Role))">
                                     <option>Lütfen Bir Kullanıcı Rolü Seçiniz...</option>
-                                    <option value="1">Admin</option>
+                                    @*<option value="1">Admin</option>
                                     <option value="3">Supplier</option>
-                                    <option value="5">User</option>
+                                    <option value="5">User</option>*@
                                 </select>
                             </div>
                             <div class="form-group has-success">

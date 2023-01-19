@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using StokKontrolProject.Entities.Entities;
 using System.Text;
@@ -48,11 +49,13 @@ namespace StokKontrolProject.UI.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+        static List<Category> aktifKategoriler;
+        static List<Supplier> aktifTedarikciler;
+
         [HttpGet]
         public async Task<IActionResult> UrunEkle()
         {
-            IEnumerable<Category> aktifKategoriler = new List<Category>();
-            IEnumerable<Supplier> aktifTedarikciler = new List<Supplier>();
+           
             using (var httpClient = new HttpClient())
             {
                 using (var cevap = await httpClient.GetAsync($"{uri}/api/Category/AktifKategorileriGetir"))
@@ -67,8 +70,9 @@ namespace StokKontrolProject.UI.Areas.Admin.Controllers
                 }
 
             }
-            @ViewBag.AktifKategoriler = aktifKategoriler;
-            @ViewBag.AktifTedarikciler = aktifTedarikciler;
+            ViewBag.AktifKategoriler = new SelectList(aktifKategoriler, "ID", "CategoryName");
+            ViewBag.AktifTedarikciler = new SelectList(aktifTedarikciler, "ID", "SupplierName");
+
             return View(); // Sadece ekleme view ını gösterecek
         }
 
@@ -99,6 +103,17 @@ namespace StokKontrolProject.UI.Areas.Admin.Controllers
                 {
                     string apiCevap = await cevap.Content.ReadAsStringAsync();
                     updatedProduct = JsonConvert.DeserializeObject<Product>(apiCevap);
+                }
+
+                using (var cevap = await httpClient.GetAsync($"{uri}/api/Category/AktifKategorileriGetir"))
+                {
+                    string apiCevap = await cevap.Content.ReadAsStringAsync();
+                    aktifKategoriler = JsonConvert.DeserializeObject<List<Category>>(apiCevap);
+                }
+                using (var cevap = await httpClient.GetAsync($"{uri}/api/Supplier/AktifTedarikcileriGetir"))
+                {
+                    string apiCevap = await cevap.Content.ReadAsStringAsync();
+                    aktifTedarikciler = JsonConvert.DeserializeObject<List<Supplier>>(apiCevap);
                 }
             }
             return View(updatedProduct); //update edilecek urunyi güncelleme view'ında gösterecek  

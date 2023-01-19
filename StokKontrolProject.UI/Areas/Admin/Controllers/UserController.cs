@@ -68,44 +68,46 @@ namespace StokKontrolProject.UI.Areas.Admin.Controllers
                 }
             }
             return RedirectToAction("Index");
-        }     
+        }
 
-        //LOGİN 40-49
-        
+        static User updatedUser;
 
-        //GÜNCELLEME KISMI----------------------------------------------------
+        [HttpGet]
+        public async Task<IActionResult> KullaniciGuncelle(int id) //id ile ilgili kategoryi bul getir
+        {
+            using (var httpClient = new HttpClient())
+            {
+                using (var cevap = await httpClient.GetAsync($"{uri}/api/User/IdyeGoreKullaniciGetir/{id}"))
+                {
+                    string apiCevap = await cevap.Content.ReadAsStringAsync();
+                    updatedUser = JsonConvert.DeserializeObject<User>(apiCevap);
+                }
+            }
+            return View(updatedUser); // Update edilecek kategoriyi güncelleme View'ında gösterecek  
+        }
 
-        //[HttpGet]
-        //public async Task<IActionResult> KullanıcıGuncelle(int id) //id ile ilgili kategoryi bul getir
-        //{
-        //    using (var httpClient = new HttpClient())
-        //    {
-        //        using (var cevap = await httpClient.GetAsync($"{uri}/api/User/IdyeGoreKullanıcıGetir/{id}"))
-        //        {
-        //            string apiCevap = await cevap.Content.ReadAsStringAsync();
-        //            updatedUser = JsonConvert.DeserializeObject<User>(apiCevap);
-        //        }
-        //    }
-        //    return View(updatedUser); // Update edilecek kategoriyi güncelleme View'ında gösterecek  
-        //}
+        [HttpPost]
+        public async Task<IActionResult> KullaniciGuncelle(User guncelKullanici) //güncellenmiş kategori parametre olarak alınır.
+        {
+            if (ModelState.IsValid)
+            {
+                using (var httpClient = new HttpClient())
+                {
+                    guncelKullanici.AddedDate = updatedUser.AddedDate;
+                    guncelKullanici.IsActive = true;
+                    guncelKullanici.Password = updatedUser.Password;
 
-        //[HttpPost]
-        //public async Task<IActionResult> KategoriGuncelle(User guncelKategori) //güncellenmiş kategori parametre olarak alınır.
-        //{
-        //    using (var httpClient = new HttpClient())
-        //    {
-        //        guncelKategori.AddedDate = updatedUser.AddedDate;
-        //        guncelKategori.IsActive = true;
-
-        //        StringContent content = new StringContent(JsonConvert.SerializeObject(guncelKategori), Encoding.UTF8, "application/json");
-        //        using (var cevap = await httpClient.PutAsync($"{uri}/api/User/KategoriGuncelle/{guncelKategori.ID}", content))
-        //        {
-        //            string apiCevap = await cevap.Content.ReadAsStringAsync();
-        //            //kategoriler = JsonConvert.DeserializeObject<List<User>>(apiCevap);
-        //        }
-        //    }
-        //    return RedirectToAction("Index");
-        //}
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(guncelKullanici), Encoding.UTF8, "application/json");
+                    using (var cevap = await httpClient.PutAsync($"{uri}/api/User/KullaniciGuncelle/{guncelKullanici.ID}", content))
+                    {
+                        string apiCevap = await cevap.Content.ReadAsStringAsync();
+                        //kullanicilar = JsonConvert.DeserializeObject<List<User>>(apiCevap);
+                    }
+                }
+            }
+            
+            return RedirectToAction("Index");
+        }
     }
 }
 
