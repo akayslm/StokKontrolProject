@@ -51,8 +51,8 @@ namespace StokKontrolProject.UI.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> UrunEkle()
         {
-            List<Category> aktifKategoriler = new List<Category>();
-            List<Supplier> aktifTedarikciler = new List<Supplier>();
+            IEnumerable<Category> aktifKategoriler = new List<Category>();
+            IEnumerable<Supplier> aktifTedarikciler = new List<Supplier>();
             using (var httpClient = new HttpClient())
             {
                 using (var cevap = await httpClient.GetAsync($"{uri}/api/Category/AktifKategorileriGetir"))
