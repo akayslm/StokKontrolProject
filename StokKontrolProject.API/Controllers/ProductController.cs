@@ -17,21 +17,21 @@ namespace StokKontrolProject.API.Controllers
 
         // GET: api/Product
         [HttpGet]
-        public IActionResult TumÜrünleriGetir()
+        public IActionResult TumUrunleriGetir()
         {
             return Ok(_service.GetAll(t0=>t0.Kategori, t1=>t1.Tedarikci));
         }
 
         // GET: api/Product/AktifÜrünleriGetir
         [HttpGet()]
-        public IActionResult AktifÜrünleriGetir()
+        public IActionResult AktifUrunleriGetir()
         {
             return Ok(_service.GetActive(t0 => t0.Kategori, t1 => t1.Tedarikci));
         }
 
         // GET: api/Product/IdyeGoreÜrünGetir/5
         [HttpGet("{id}")]
-        public IActionResult IdyeGoreÜrünGetir(int id)
+        public IActionResult IdyeGoreUrunGetir(int id)
         {
             return Ok(_service.GetByID(id));
         }
@@ -39,17 +39,17 @@ namespace StokKontrolProject.API.Controllers
         // POST: api/Product
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public IActionResult ÜrünEkle(Product product)
+        public IActionResult UrunEkle(Product product)
         {
             _service.Add(product);
 
-            return CreatedAtAction("IdyeGoreÜrünGetir", new { id = product.ID }, product);
+            return CreatedAtAction("IdyeGoreUrunGetir", new { id = product.ID }, product);
         }
 
         // PUT: api/Product/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public IActionResult ÜrünGuncelle(int id, Product product)
+        public IActionResult UrunGuncelle(int id, Product product)
         {
             if (id != product.ID)
             {
@@ -76,7 +76,7 @@ namespace StokKontrolProject.API.Controllers
 
     // DELETE: api/Product/5
     [HttpDelete("{id}")]
-        public IActionResult ÜrünSil(int id)
+        public IActionResult UrunSil(int id)
         {
             var Product = _service.GetByID(id);
             if (Product == null)
@@ -102,7 +102,7 @@ namespace StokKontrolProject.API.Controllers
         }
 
         [HttpGet()]
-        public IActionResult ÜrünleriAktiflestir(int id)
+        public IActionResult UrunleriAktiflestir(int id)
         {
             var Product = _service.GetByID(id);
             if (Product == null)

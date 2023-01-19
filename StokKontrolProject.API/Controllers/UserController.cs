@@ -18,21 +18,21 @@ namespace StokKontrolProject.API.Controllers
 
         // GET: api/User
         [HttpGet]
-        public IActionResult TumKullanıcılarıGetir()
+        public IActionResult TumKullanicilariGetir()
         {
             return Ok(_service.GetAll());
         }
 
         // GET: api/User/AktifKategorileriGetir
         [HttpGet()]
-        public IActionResult AktifKullanıcılarıGetir()
+        public IActionResult AktifKullanicilariGetir()
         {
             return Ok(_service.GetActive());
         }
 
         // GET: api/User/IdyeGoreKategoriGetir/5
         [HttpGet("{id}")]
-        public IActionResult IdyeGoreKullanıcıGetir(int id)
+        public IActionResult IdyeGoreKullaniciGetir(int id)
         {
             return Ok(_service.GetByID(id));
         }
@@ -51,17 +51,17 @@ namespace StokKontrolProject.API.Controllers
         // POST: api/User
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public IActionResult KullanıcıEkle(User user)
+        public IActionResult KullaniciEkle(User user)
         {
             _service.Add(user);
 
-            return CreatedAtAction("IdyeGoreKullanıcıGetir", new { id = user.ID }, user);
+            return CreatedAtAction("IdyeGoreKullaniciGetir", new { id = user.ID }, user);
         }
 
         // PUT: api/User/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public IActionResult KullanıcıGuncelle(int id, User user)
+        public IActionResult KullaniciGuncelle(int id, User user)
         {
             if (id != user.ID)
             {
@@ -88,7 +88,7 @@ namespace StokKontrolProject.API.Controllers
 
         // DELETE: api/User/5
         [HttpDelete("{id}")]
-        public IActionResult KullanıcıSil(int id)
+        public IActionResult KullaniciSil(int id)
         {
             var user = _service.GetByID(id);
             if (user == null)
@@ -114,7 +114,7 @@ namespace StokKontrolProject.API.Controllers
         }
 
         [HttpGet()]
-        public IActionResult KullanıcılarıAktiflestir(int id)
+        public IActionResult KullaniciAktiflestir(int id)
         {
             var User = _service.GetByID(id);
             if (User == null)
