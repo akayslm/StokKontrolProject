@@ -49,8 +49,26 @@ namespace StokKontrolProject.UI.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult UrunEkle()
+        public async Task<IActionResult> UrunEkle()
         {
+            List<Category> aktifKategoriler = new List<Category>();
+            List<Supplier> aktifTedarikciler = new List<Supplier>();
+            using (var httpClient = new HttpClient())
+            {
+                using (var cevap = await httpClient.GetAsync($"{uri}/api/Category/AktifKategorileriGetir"))
+                {
+                    string apiCevap = await cevap.Content.ReadAsStringAsync();
+                    aktifKategoriler = JsonConvert.DeserializeObject<List<Category>>(apiCevap);
+                }
+                using (var cevap = await httpClient.GetAsync($"{uri}/api/Supplier/AktifTedarikcileriGetir"))
+                {
+                    string apiCevap = await cevap.Content.ReadAsStringAsync();
+                    aktifTedarikciler = JsonConvert.DeserializeObject<List<Supplier>>(apiCevap);
+                }
+
+            }
+            @ViewBag.AktifKategoriler = aktifKategoriler;
+            @ViewBag.AktifTedarikciler = aktifTedarikciler;
             return View(); // Sadece ekleme view ını gösterecek
         }
 
